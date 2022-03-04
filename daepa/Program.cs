@@ -1,16 +1,16 @@
 ﻿using System;
 
 namespace daepa {
+  /// <summary>
+  /// The main class.
+  /// </summary>
+  public static class Program {
     /// <summary>
-    /// The main class.
+    /// The main entry point for the application.
     /// </summary>
-    public static class Program {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        static void Main() {
-            var factory = new MonoGame.Framework.GameFrameworkViewSource<Daepa2D>();
-            Windows.ApplicationModel.Core.CoreApplication.Run(factory);
-        }
+    static void Main() {
+      var factory = new MonoGame.Framework.GameFrameworkViewSource<Daepa2D>();
+      Windows.ApplicationModel.Core.CoreApplication.Run(factory);
     }
+  }
 }
