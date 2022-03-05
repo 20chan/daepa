@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using daepa.Renders.Primitives2D;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -10,31 +11,46 @@ using System.Threading.Tasks;
 namespace daepa.Renders.Samples {
 	public class LineDrawer {
 		private Renderer r;
-		private int cursorLineIndex;
+		private Line cursorLine;
 
 		public LineDrawer(Renderer r) {
 			this.r = r;
 
-			var line0 = r.CreateLine(out _);
-			var line1 = r.CreateLine(out _);
-			var line2 = r.CreateLine(out _);
+			var line0 = new Line(
+				new VertexPositionColor(new Vector3(100, 100, 0), Color.White),
+				new VertexPositionColor(new Vector3(800, 100, 0), Color.White));
+			var line1 = new Line(
+				new VertexPositionColor(new Vector3(800, 100, 0), Color.White),
+				new VertexPositionColor(new Vector3(400, 500, 0), Color.White));
+			var line2 = new Line(
+				new VertexPositionColor(new Vector3(400, 500, 0), Color.White),
+				new VertexPositionColor(new Vector3(100, 100, 0), Color.White));
 
-			line0[0].Position = new Vector3(100, 100, 0);
-			line0[1].Position = new Vector3(300, 100, 0);
-			line1[0].Position = new Vector3(300, 100, 0);
-			line1[1].Position = new Vector3(200, 60, 0);
-			line2[0].Position = new Vector3(200, 60, 0);
-			line2[1].Position = new Vector3(100, 100, 0);
+			cursorLine = new Line(
+				new VertexPositionColor(new Vector3(400, 200, 0), Color.White),
+				new VertexPositionColor(new Vector3(0, 0, 0), Color.White));
 
-			var line3 = r.CreateLine(out cursorLineIndex);
-			line3[0].Position = new Vector3(100, 100, 0);
+			r.Objects.Add(line0);
+			r.Objects.Add(line1);
+			r.Objects.Add(line2);
+			r.Objects.Add(cursorLine);
 		}
 
 		public void Update() {
 			var input = Mouse.GetState();
 
-			ref var line = ref r.Lines[cursorLineIndex + 1];
-			line.Position = new Vector3(input.X, input.Y, 0);
+			if (input.LeftButton == ButtonState.Pressed) {
+				if (!r.Objects.Contains(cursorLine)) {
+					r.Objects.Add(cursorLine);
+				}
+			}
+			if (input.RightButton == ButtonState.Pressed) {
+				if (r.Objects.Contains(cursorLine)) {
+					r.Objects.Remove(cursorLine);
+				}
+			}
+
+			cursorLine.Point1.Position = new Vector3(input.X, input.Y, 0);
 		}
 	}
 }
